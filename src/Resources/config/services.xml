@@ -5,6 +5,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-
+        <service id="Sas\CmsGenerator\Command\GenerateCms">
+            <tag name="console.command"/>
+        </service>
     </services>
 </container>

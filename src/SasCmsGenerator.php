@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace SasCmsGenerator;
+namespace Sas\CmsGenerator;
 
 use Shopware\Core\Framework\Plugin;
 

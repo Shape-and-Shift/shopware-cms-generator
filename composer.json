@@ -1,18 +1,18 @@
 {
-  "name": "swag/plugin-skeleton",
-  "description": "Skeleton plugin",
+  "name": "sas/cms-generator",
+  "description": "Creates the structure for new cms elements",
   "type": "shopware-platform-plugin",
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "SasCmsGenerator\\": "src/"
+      "Sas\\CmsGenerator\\": "src/"
     }
   },
   "extra": {
-    "shopware-plugin-class": "SasCmsGenerator\\SasCmsGenerator",
+    "shopware-plugin-class": "Sas\\CmsGenerator\\SasCmsGenerator",
     "label": {
-      "de-DE": "Skeleton plugin",
-      "en-GB": "Skeleton plugin"
+      "de-DE": "CMS element generator",
+      "en-GB": "Generieren von CMS Elementen"
     }
   }
 }
