@@ -59,7 +59,16 @@ class GenerateCmsBlock extends Command
             $blockCategory
         );
 
+        $this->buildStorefrontBlock(
+            $input->getArgument('blockName'),
+            $input->getArgument('pluginName'),
+            $blockCategory
+        );
+
         $output->writeln('You have just selected: '.$blockCategory);
+        $output->writeln(
+            'CMS Block: '.$input->getArgument('blockName') . ' scaffolding installed successfully'
+        );
 
         return Command::SUCCESS;
     }
@@ -142,6 +151,37 @@ class GenerateCmsBlock extends Command
                 }
             }
         }
+    }
+
+    /**
+     * Build the CMS Storefront file.
+     *
+     * @param string $elementName
+     * @param string $pluginName
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function buildStorefrontBlock(string $blockName, string $pluginName, string $blockCategory)
+    {
+        $storefrontTemplate = file_get_contents(__DIR__ . '/../../stubs/block/block.storefront.stub');
+
+        // Replace placeholder within the stub file
+        $storefrontTemplate = str_replace('{{ name }}', $blockName, $storefrontTemplate);
+
+        // Convert element-name to element_name for Twig block
+        $twigBlockName = new UnicodeString($blockName);
+        $storefrontTemplate = str_replace('{{ block }}', $twigBlockName->snake(), $storefrontTemplate);
+
+        // Generate the folder path
+        $fileSystem = new Filesystem();
+        $templateFolderPath = $this->determinePluginPath($pluginName) . '/Resources/views/storefront/block/';
+
+        if (!file_exists($templateFolderPath)) {
+            $fileSystem->mkdir($templateFolderPath);
+        }
+
+        // Move the generated file to the correct folder path
+        file_put_contents($templateFolderPath . '/cms-block-' . $blockCategory . '-' . $blockName . '.html.twig', $storefrontTemplate);
     }
 
     /**
