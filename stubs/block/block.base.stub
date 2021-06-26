@@ -2,7 +2,7 @@ import './component';
 import './preview';
 
 Shopware.Service('cmsService').registerCmsBlock({
-    name: 'text',
+    name: '{{ name }}',
     label: 'sw-cms.blocks.{{ category }}.{{ label }}.label',
     category: '{{ category }}',
     component: 'sw-cms-block-{{ name }}',
