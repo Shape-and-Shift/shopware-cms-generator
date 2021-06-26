@@ -83,6 +83,15 @@ class GenerateCms extends Command
                 $twigBlockName = new UnicodeString($elementName);
                 $fileContent = str_replace('{{ block }}', $twigBlockName->snake(), $fileContent);
 
+                // Convert foo-bar to fooBar for the label
+                $labelName = new UnicodeString($elementName);
+                $fileContent = str_replace('{{ label }}', $labelName->camel(), $fileContent);
+
+                // Create the index file for the element
+                if (strpos($file->getFilename(), 'base')) {
+                    file_put_contents($elementFolderPath . '/' . 'index.js', $fileContent);
+                }
+
                 // create the files based on the type
                 if (
                     strpos($file->getFilename(), 'component') ||
