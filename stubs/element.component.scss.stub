@@ -1,0 +1,5 @@
+import "~scss/variables";
+
+.sw-cms-el-{{ name }} {
+    width: 100%;
+}

@@ -90,9 +90,17 @@ class GenerateCms extends Command
     {
         $pluginPath = $this->determinePluginPath($pluginName);
         $cmsElement = file_get_contents(__DIR__ . '/../../stubs/element.component.index.stub');
+        $componentTwig = file_get_contents(__DIR__ . '/../../stubs/element.component.twig.stub');
 
-        // Replace placeholder within the stub file
+        // Convert foo-bar to foo_bar for the twig block
+        $twigBlockName = new UnicodeString($elementName);
+
+        // Component index.js
         $cmsElement = str_replace('{{ name }}', $elementName, $cmsElement);
+
+        // Twig component
+        $componentTwig = str_replace('{{ block }}', $twigBlockName->snake(), $componentTwig);
+        $componentTwig = str_replace('{{ name }}', $elementName, $componentTwig);
 
         // Remove empty lines...
         $cmsElement = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $cmsElement);
@@ -107,6 +115,7 @@ class GenerateCms extends Command
 
         // Move the generated file to the correct folder path
         file_put_contents($elementFolderPath . '/index.js', $cmsElement);
+        file_put_contents($elementFolderPath . 'sw-cms-el-'. $elementName .'.html.twig', $componentTwig);
     }
 
     private function getFileInformation(string $elementName, string $pluginName)
