@@ -1,11 +1,13 @@
 # Generate CMS elements or blocks
 
-This plugin puts products which are sold out always at the end of the listing and search results
-and also shows a sold out badge.
+Tired of creating the whole folder structure for a CMS block or element?
+With this plugin you can create the scaffolding within a few seconds 🚀
 
 ### Installation
 
-`composer require sas/cms-generator`
+- `composer require sas/cms-generator`
+- `bin/console plugin:refresh`
+- `bin/console plugin:install SasCmsGenerator -a`
 
 ### Commands
 The first parameter accepts the name for the element or block. 
