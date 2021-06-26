@@ -10,8 +10,13 @@
             <bind key="$pluginInfos">%kernel.plugin_infos%</bind>
         </defaults>
 
-        <service id="Sas\CmsGenerator\Command\GenerateCms">
+        <service id="Sas\CmsGenerator\Command\GenerateCmsElement">
             <tag name="console.command"/>
         </service>
+
+        <service id="Sas\CmsGenerator\Command\GenerateCmsBlock">
+            <tag name="console.command"/>
+        </service>
+
     </services>
 </container>

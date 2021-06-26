@@ -10,9 +10,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\String\UnicodeString;
 
-class GenerateCms extends Command
+class GenerateCmsElement extends Command
 {
-    public static $defaultName = 'sas:generate-cms';
+    public static $defaultName = 'sas:generate-cms:element';
 
     private array $pluginInfos;
     private string $projectDir;
@@ -117,7 +117,7 @@ class GenerateCms extends Command
                     if (!file_exists($elementFolderPath . '/' . $type)) {
                         $fileSystem->mkdir($elementFolderPath . '/' . $type);
                     }
-                    
+
                     if (strpos($file->getFilename(), 'twig')) {
                         file_put_contents($elementFolderPath . '/' . $type . '/sw-cms-el-'. $type . '-' . $elementName .'.html.twig', $fileContent);
                     }
