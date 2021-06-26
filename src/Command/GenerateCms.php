@@ -84,11 +84,11 @@ class GenerateCms extends Command
                 $fileContent = file_get_contents($file->getPathname());
                 $fileContent = str_replace('{{ name }}', $elementName, $fileContent);
 
-                // Convert foo-bar to foo_bar for the twig block
+                // Convert element-name to element_name for the twig block
                 $twigBlockName = new UnicodeString($elementName);
                 $fileContent = str_replace('{{ block }}', $twigBlockName->snake(), $fileContent);
 
-                // Convert foo-bar to fooBar for the label
+                // Convert element-name to elementName for the label
                 $labelName = new UnicodeString($elementName);
                 $fileContent = str_replace('{{ label }}', $labelName->camel(), $fileContent);
 
@@ -104,6 +104,7 @@ class GenerateCms extends Command
                     strpos($file->getFilename(), 'config')
                 ) {
 
+                    // Create the type string based on the stub file
                     if (strpos($file->getFilename(), 'component') ) {
                         $type = 'component';
                     } elseif (strpos($file->getFilename(), 'preview')) {
@@ -116,7 +117,7 @@ class GenerateCms extends Command
                     if (!file_exists($elementFolderPath . '/' . $type)) {
                         $fileSystem->mkdir($elementFolderPath . '/' . $type);
                     }
-
+                    
                     if (strpos($file->getFilename(), 'twig')) {
                         file_put_contents($elementFolderPath . '/' . $type . '/sw-cms-el-'. $type . '-' . $elementName .'.html.twig', $fileContent);
                     }
@@ -147,6 +148,8 @@ class GenerateCms extends Command
 
         // Replace placeholder within the stub file
         $storefrontTemplate = str_replace('{{ name }}', $elementName, $storefrontTemplate);
+
+        // Convert element-name to element_name for Twig block
         $twigBlockName = new UnicodeString($elementName);
         $storefrontTemplate = str_replace('{{ block }}', $twigBlockName->snake(), $storefrontTemplate);
 
