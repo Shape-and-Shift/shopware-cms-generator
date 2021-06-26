@@ -1,0 +1,5 @@
+{% block sw_cms_block_{{ block }} %}
+<div class="sw-cms-block-{{ name }}">
+    {{ name }}
+</div>
+{% endblock %}

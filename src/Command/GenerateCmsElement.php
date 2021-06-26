@@ -66,7 +66,7 @@ class GenerateCmsElement extends Command
 
         // Loop trough all stubs in /../../stubs/ and create an array of those
         $finder = new Finder();
-        $finder->files()->in(__DIR__ . '/../../stubs/');
+        $finder->files()->in(__DIR__ . '/../../stubs/element/');
 
         // Generate the folder path
         $fileSystem = new Filesystem();
@@ -144,7 +144,7 @@ class GenerateCmsElement extends Command
      */
     public function buildStorefrontElement(string $elementName, string $pluginName)
     {
-        $storefrontTemplate = file_get_contents(__DIR__ . '/../../stubs/element.storefront.stub');
+        $storefrontTemplate = file_get_contents(__DIR__ . '/../../stubs/element/element.storefront.stub');
 
         // Replace placeholder within the stub file
         $storefrontTemplate = str_replace('{{ name }}', $elementName, $storefrontTemplate);

@@ -52,9 +52,95 @@ class GenerateCmsBlock extends Command
         $question->setErrorMessage('Block category %s is invalid.');
 
         $blockCategory = $helper->ask($input, $output, $question);
+
+        $this->buildCmsBlock(
+            $input->getArgument('blockName'),
+            $input->getArgument('pluginName'),
+            $blockCategory
+        );
+
         $output->writeln('You have just selected: '.$blockCategory);
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * Build the CMS Block files.
+     *
+     * @param string $blockName
+     * @param string $pluginName
+     * @return void
+     * @throws \ReflectionException
+     */
+    private function buildCmsBlock(string $blockName, string $pluginName, string $blockCategory)
+    {
+        // Get the plugin path
+        $pluginPath = $this->determinePluginPath($pluginName);
+
+        // Loop trough all stubs in /../../stubs/ and create an array of those
+        $finder = new Finder();
+        $finder->files()->in(__DIR__ . '/../../stubs/block/');
+
+        // Generate the folder path
+        $fileSystem = new Filesystem();
+        $blockFolderPath = $pluginPath . '/Resources/app/administration/src/module/sw-cms/blocks/' . $blockCategory . '/' . $blockName . '/';
+
+        // If folder path does not exist, create it
+        if (!file_exists($blockFolderPath)) {
+            $fileSystem->mkdir($blockFolderPath);
+        }
+
+        if ($finder->hasResults()) {
+
+            foreach ($finder as $file) {
+                $fileContent = file_get_contents($file->getPathname());
+                $fileContent = str_replace('{{ name }}', $blockName, $fileContent);
+
+                // Convert element-name to element_name for the twig block
+                $twigBlockName = new UnicodeString($blockName);
+                $fileContent = str_replace('{{ block }}', $twigBlockName->snake(), $fileContent);
+
+                // Convert element-name to elementName for the label
+                $labelName = new UnicodeString($blockName);
+                $fileContent = str_replace('{{ label }}', $labelName->camel(), $fileContent);
+
+                // Create the index file for the element
+                if (strpos($file->getFilename(), 'base')) {
+                    file_put_contents($blockFolderPath . '/' . 'index.js', $fileContent);
+                }
+
+                // create the files based on the type
+                if (
+                    strpos($file->getFilename(), 'component') ||
+                    strpos($file->getFilename(), 'preview')
+                ) {
+
+                    // Create the type string based on the stub file
+                    if (strpos($file->getFilename(), 'component') ) {
+                        $type = 'component';
+                    } elseif (strpos($file->getFilename(), 'preview')) {
+                        $type = 'preview';
+                    }
+
+                    // if folder does not exist, create it
+                    if (!file_exists($blockFolderPath . '/' . $type)) {
+                        $fileSystem->mkdir($blockFolderPath . '/' . $type);
+                    }
+
+                    if (strpos($file->getFilename(), 'twig')) {
+                        file_put_contents($blockFolderPath . '/' . $type . '/sw-cms-block-'. $type . '-' . $blockName .'.html.twig', $fileContent);
+                    }
+
+                    if (strpos($file->getFilename(), 'scss')) {
+                        file_put_contents($blockFolderPath . '/' . $type . '/sw-cms-block-'. $type . '-' .  $blockName .'.scss', $fileContent);
+                    }
+
+                    if (strpos($file->getFilename(), 'index')) {
+                        file_put_contents($blockFolderPath . '/' . $type . '/sw-cms-block-'. $type . '-' .  $blockName .'.js', $fileContent);
+                    }
+                }
+            }
+        }
     }
 
     /**
