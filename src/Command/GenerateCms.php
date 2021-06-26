@@ -39,6 +39,11 @@ class GenerateCms extends Command
             $input->getArgument('pluginName')
         );
 
+        $this->buildStorefrontElement(
+            $input->getArgument('elementName'),
+            $input->getArgument('pluginName')
+        );
+
         $output->writeln(
             'CMS Element: '.$input->getArgument('elementName') . ' scaffolding installed successfully'
         );
@@ -126,6 +131,27 @@ class GenerateCms extends Command
                 }
             }
         }
+    }
+
+    public function buildStorefrontElement(string $elementName, string $pluginName)
+    {
+        $storefrontTemplate = file_get_contents(__DIR__ . '/../../stubs/element.storefront.stub');
+
+        // Replace placeholder within the stub file
+        $storefrontTemplate = str_replace('{{ name }}', $elementName, $storefrontTemplate);
+        $twigBlockName = new UnicodeString($elementName);
+        $storefrontTemplate = str_replace('{{ block }}', $twigBlockName->snake(), $storefrontTemplate);
+
+        // Generate the folder path
+        $fileSystem = new Filesystem();
+        $templateFolderPath = $this->determinePluginPath($pluginName) . '/Resources/views/storefront/element/';
+
+        if (!file_exists($templateFolderPath)) {
+            $fileSystem->mkdir($templateFolderPath);
+        }
+
+        // Move the generated file to the correct folder path
+        file_put_contents($templateFolderPath . '/cms-element-' . $elementName . '.html.twig', $storefrontTemplate);
     }
 
     /**
