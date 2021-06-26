@@ -83,7 +83,7 @@ class GenerateCms extends Command
                 $twigBlockName = new UnicodeString($elementName);
                 $fileContent = str_replace('{{ block }}', $twigBlockName->snake(), $fileContent);
 
-                // if file contains .component. create component folder and move the file
+                // create the files based on the type
                 if (
                     strpos($file->getFilename(), 'component') ||
                     strpos($file->getFilename(), 'preview') ||
