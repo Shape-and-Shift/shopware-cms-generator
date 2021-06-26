@@ -1,18 +1,40 @@
 {
-  "name": "sas/cms-generator",
-  "description": "Creates the structure for new cms elements",
-  "type": "shopware-platform-plugin",
-  "license": "MIT",
-  "autoload": {
-    "psr-4": {
-      "Sas\\CmsGenerator\\": "src/"
+    "name": "sas/cms-generator",
+    "description": "Creates the structure for new cms elements or blocks",
+    "type": "shopware-platform-plugin",
+    "version": "1.0.0",
+    "license": "MIT",
+    "authors": [{
+        "name": "Shape & Shift",
+        "role": "Manufacturer",
+        "homepage": "https://shapeandshift.dev"
+    }],
+    "require": {
+        "shopware/core": "~6.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sas\\CmsGenerator\\": "src/"
+        }
+    },
+    "extra": {
+        "shopware-plugin-class": "Sas\\CmsGenerator\\SasCmsGenerator",
+        "plugin-icon": "src/Resources/config/plugin.png",
+        "label": {
+            "de-DE": "CMS Scafollding",
+            "en-GB": "CMS Scafollding"
+        },
+        "description": {
+            "de-DE": "Generiert eine Boilerplate fuer CMS Elemente oder CMS Blocks",
+            "en-GB": "Generates a scaffolding for CMS elements or CMS blocks"
+        },
+        "manufacturerLink": {
+            "de-DE": "https://shapeandshift.dev",
+            "en-GB": "https://shapeandshift.dev"
+        },
+        "supportLink": {
+            "de-DE": "https://shapeandshift.dev",
+            "en-GB": "https://shapeandshift.dev"
+        }
     }
-  },
-  "extra": {
-    "shopware-plugin-class": "Sas\\CmsGenerator\\SasCmsGenerator",
-    "label": {
-      "de-DE": "CMS element generator",
-      "en-GB": "Generieren von CMS Elementen"
-    }
-  }
 }
