@@ -1,5 +1,5 @@
-import template from './sw-cms-el-{{ name }}.html.twig';
-import './sw-cms-el-{{ name }}.scss';
+import template from './sw-cms-el-component-{{ name }}.html.twig';
+import './sw-cms-el-component-{{ name }}.scss';
 
 const { Component, Mixin } = Shopware;
 

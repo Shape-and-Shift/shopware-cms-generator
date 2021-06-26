@@ -1,5 +1,5 @@
-{% block sw_cms_el_{{ block }} %}
-<div class="sw-cms-el-{{ name }}">
+{% block sw_cms_el_component_{{ block }} %}
+<div class="sw-cms-el-component-{{ name }}">
     {{ name }}
 </div>
 {% endblock %}

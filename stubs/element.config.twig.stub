@@ -1,0 +1,5 @@
+{% block sw_cms_element_{{ block }}_config %}
+<div class="sw-cms-el-config-{{ name }}">
+    {{ name }}
+</div>
+{% endblock %}

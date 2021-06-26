@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\String\UnicodeString;
 
 class GenerateCms extends Command
@@ -38,11 +39,6 @@ class GenerateCms extends Command
             $input->getArgument('pluginName')
         );
 
-        $this->buildComponent(
-            $input->getArgument('elementName'),
-            $input->getArgument('pluginName')
-        );
-
         $output->writeln(
             'CMS Element: '.$input->getArgument('elementName') . ' scaffolding installed successfully'
         );
@@ -58,82 +54,69 @@ class GenerateCms extends Command
      * @return void
      * @throws \ReflectionException
      */
-    protected function buildCmsElement(string $elementName, string $pluginName)
+    private function buildCmsElement(string $elementName, string $pluginName)
     {
+        // Get the plugin path
         $pluginPath = $this->determinePluginPath($pluginName);
-        $cmsElement = file_get_contents(__DIR__ . '/../../stubs/element.index.stub');
 
-        // Convert foo-bar to fooBar for the element label
-        $elementLabel = new UnicodeString($elementName);
-
-        // Replace placeholder within the stub file
-        $cmsElement = str_replace('{{ name }}', $elementName, $cmsElement);
-        $cmsElement = str_replace('{{ label }}', $elementLabel->camel(), $cmsElement);
-
-        // Remove empty lines...
-        $cmsElement = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $cmsElement);
+        // Loop trough all stubs in /../../stubs/ and create an array of those
+        $finder = new Finder();
+        $finder->files()->in(__DIR__ . '/../../stubs/');
 
         // Generate the folder path
         $fileSystem = new Filesystem();
         $elementFolderPath = $pluginPath . '/Resources/app/administration/src/module/sw-cms/elements/' . $elementName . '/';
 
+        // If folder path does not exist, create it
         if (!file_exists($elementFolderPath)) {
             $fileSystem->mkdir($elementFolderPath);
         }
 
-        // Move the generated file to the correct folder path
-        file_put_contents($elementFolderPath . '/index.js', $cmsElement);
+        if ($finder->hasResults()) {
 
-    }
+            foreach ($finder as $file) {
 
-    protected function buildComponent(string $elementName, string $pluginName)
-    {
-        $pluginPath = $this->determinePluginPath($pluginName);
-        $cmsElement = file_get_contents(__DIR__ . '/../../stubs/element.component.index.stub');
-        $componentTwig = file_get_contents(__DIR__ . '/../../stubs/element.component.twig.stub');
-        $componentScss = file_get_contents(__DIR__ . '/../../stubs/element.component.scss.stub');
+                $fileContent = file_get_contents($file->getPathname());
+                $fileContent = str_replace('{{ name }}', $elementName, $fileContent);
 
+                // Convert foo-bar to foo_bar for the twig block
+                $twigBlockName = new UnicodeString($elementName);
+                $fileContent = str_replace('{{ block }}', $twigBlockName->snake(), $fileContent);
 
-        // Convert foo-bar to foo_bar for the twig block
-        $twigBlockName = new UnicodeString($elementName);
+                // if file contains .component. create component folder and move the file
+                if (
+                    strpos($file->getFilename(), 'component') ||
+                    strpos($file->getFilename(), 'preview') ||
+                    strpos($file->getFilename(), 'config')
+                ) {
 
-        // Component index.js
-        $cmsElement = str_replace('{{ name }}', $elementName, $cmsElement);
+                    if (strpos($file->getFilename(), 'component') ) {
+                        $type = 'component';
+                    } elseif (strpos($file->getFilename(), 'preview')) {
+                        $type = 'preview';
+                    } elseif (strpos($file->getFilename(), 'config')) {
+                        $type = 'config';
+                    }
 
-        // Twig component
-        $componentTwig = str_replace('{{ block }}', $twigBlockName->snake(), $componentTwig);
-        $componentTwig = str_replace('{{ name }}', $elementName, $componentTwig);
+                    // if folder does not exist, create it
+                    if (!file_exists($elementFolderPath . '/' . $type)) {
+                        $fileSystem->mkdir($elementFolderPath . '/' . $type);
+                    }
 
-        // Scss component
-        $componentScss = str_replace('{{ name }}', $elementName, $componentScss);
+                    if (strpos($file->getFilename(), 'twig')) {
+                        file_put_contents($elementFolderPath . '/' . $type . '/sw-cms-el-'. $type . '-' . $elementName .'.html.twig', $fileContent);
+                    }
 
-        // Remove empty lines...
-        $cmsElement = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $cmsElement);
+                    if (strpos($file->getFilename(), 'scss')) {
+                        file_put_contents($elementFolderPath . '/' . $type . '/sw-cms-el-'. $type . '-' .  $elementName .'.scss', $fileContent);
+                    }
 
-        // Generate the folder path
-        $fileSystem = new Filesystem();
-        $elementFolderPath = $pluginPath . '/Resources/app/administration/src/module/sw-cms/elements/' . $elementName . '/components/';
-
-        if (!file_exists($elementFolderPath)) {
-            $fileSystem->mkdir($elementFolderPath);
+                    if (strpos($file->getFilename(), 'index')) {
+                        file_put_contents($elementFolderPath . '/' . $type . '/sw-cms-el-'. $type . '-' .  $elementName .'.js', $fileContent);
+                    }
+                }
+            }
         }
-
-        // Move the generated file to the correct folder path
-        file_put_contents($elementFolderPath . '/index.js', $cmsElement);
-        file_put_contents($elementFolderPath . 'sw-cms-el-'. $elementName .'.html.twig', $componentTwig);
-        file_put_contents($elementFolderPath . 'sw-cms-el-'. $elementName .'.scss', $componentScss);
-    }
-
-    private function getFileInformation(string $elementName, string $pluginName)
-    {
-        $pluginPath = $this->determinePluginPath($pluginName);
-        $cmsElement = file_get_contents(__DIR__ . '/../../stubs/element.component.index.stub');
-
-        // Replace placeholder within the stub file
-        $cmsElement = str_replace('{{ name }}', $elementName, $cmsElement);
-
-        // Remove empty lines...
-        $cmsElement = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $cmsElement);
     }
 
     /**
