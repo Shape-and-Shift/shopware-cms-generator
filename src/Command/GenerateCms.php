@@ -133,6 +133,14 @@ class GenerateCms extends Command
         }
     }
 
+    /**
+     * Build the CMS Storefront file.
+     *
+     * @param string $elementName
+     * @param string $pluginName
+     * @return void
+     * @throws \ReflectionException
+     */
     public function buildStorefrontElement(string $elementName, string $pluginName)
     {
         $storefrontTemplate = file_get_contents(__DIR__ . '/../../stubs/element.storefront.stub');
