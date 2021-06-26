@@ -1,0 +1,9 @@
+Shopware.Service('cmsService').registerCmsElement({
+    name: '{{ name }}',
+    label: 'sw-cms.elements.{{ label }}.label',
+    component: 'sw-cms-el-{{ name }}',
+    defaultConfig: {
+    },
+    defaultData: {
+    }
+});

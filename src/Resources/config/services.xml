@@ -5,6 +5,11 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <defaults autowire="true" autoconfigure="true" public="false">
+            <bind key="$projectDir">%kernel.project_dir%</bind>
+            <bind key="$pluginInfos">%kernel.plugin_infos%</bind>
+        </defaults>
+
         <service id="Sas\CmsGenerator\Command\GenerateCms">
             <tag name="console.command"/>
         </service>
