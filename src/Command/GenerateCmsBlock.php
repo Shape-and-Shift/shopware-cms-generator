@@ -95,6 +95,7 @@ class GenerateCmsBlock extends Command
             foreach ($finder as $file) {
                 $fileContent = file_get_contents($file->getPathname());
                 $fileContent = str_replace('{{ name }}', $blockName, $fileContent);
+                $fileContent = str_replace('{{ category }}', $blockCategory, $fileContent);
 
                 // Convert element-name to element_name for the twig block
                 $twigBlockName = new UnicodeString($blockName);
