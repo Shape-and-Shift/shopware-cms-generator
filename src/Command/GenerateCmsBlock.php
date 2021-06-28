@@ -146,7 +146,7 @@ class GenerateCmsBlock extends Command
                     }
 
                     if (strpos($file->getFilename(), 'index')) {
-                        file_put_contents($blockFolderPath . '/' . $type . '/sw-cms-block-'. $type . '-' .  $blockName .'.js', $fileContent);
+                        file_put_contents($blockFolderPath . '/' . $type . '/index.js', $fileContent);
                     }
                 }
             }
@@ -181,7 +181,7 @@ class GenerateCmsBlock extends Command
         }
 
         // Move the generated file to the correct folder path
-        file_put_contents($templateFolderPath . '/cms-block-' . $blockCategory . '-' . $blockName . '.html.twig', $storefrontTemplate);
+        file_put_contents($templateFolderPath . '/cms-block-' . $blockName . '.html.twig', $storefrontTemplate);
     }
 
     /**
