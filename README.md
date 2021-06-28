@@ -3,6 +3,8 @@
 Tired of creating the whole folder structure for a CMS block or element?
 With this plugin you can create the scaffolding within a few seconds 🚀
 
+![](https://res.cloudinary.com/dtgdh7noz/image/upload/v1624871065/Bildschirmfoto_2021-06-28_um_11.56.55_b7t19n.png)
+
 ### Installation
 
 - `composer require sas/cms-generator`
