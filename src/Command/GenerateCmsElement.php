@@ -127,7 +127,7 @@ class GenerateCmsElement extends Command
                     }
 
                     if (strpos($file->getFilename(), 'index')) {
-                        file_put_contents($elementFolderPath . '/' . $type . '/sw-cms-el-'. $type . '-' .  $elementName .'.js', $fileContent);
+                        file_put_contents($elementFolderPath . '/' . $type . '/index.js', $fileContent);
                     }
                 }
             }
