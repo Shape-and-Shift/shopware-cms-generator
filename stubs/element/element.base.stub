@@ -5,7 +5,7 @@ import './preview';
 Shopware.Service('cmsService').registerCmsElement({
     name: '{{ name }}',
     label: 'sw-cms.elements.{{ label }}.label',
-    component: 'sw-cms-el-component-{{ name }}',
+    component: 'sw-cms-el-{{ name }}',
     configComponent: 'sw-cms-el-config-{{ name }}',
     previewComponent: 'sw-cms-el-preview-{{ name }}',
     defaultConfig: {
