@@ -21,8 +21,8 @@
         "shopware-plugin-class": "Sas\\CmsGenerator\\SasCmsGenerator",
         "plugin-icon": "src/Resources/config/plugin.png",
         "label": {
-            "de-DE": "CMS Scafollding",
-            "en-GB": "CMS Scafollding"
+            "de-DE": "CMS Scaffolding",
+            "en-GB": "CMS Scaffolding"
         },
         "description": {
             "de-DE": "Generiert eine Boilerplate fuer CMS Elemente oder CMS Blocks",
