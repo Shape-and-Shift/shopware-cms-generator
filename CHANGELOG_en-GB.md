@@ -1,3 +1,6 @@
+# 1.0.2
+- Fix block template filenames
+
 # 1.0.1
 - Fixed namespace issue
 
