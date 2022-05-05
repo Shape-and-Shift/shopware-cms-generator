@@ -2,7 +2,7 @@
     "name": "sas/cms-generator",
     "description": "Creates the structure for new cms elements or blocks",
     "type": "shopware-platform-plugin",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "license": "MIT",
     "authors": [{
         "name": "Shape & Shift",
