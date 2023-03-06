@@ -1,5 +1,7 @@
 {% block sw_cms_block_{{ block }} %}
 <div class="sw-cms-block-{{ name }}">
-    {{ name }}
+    <slot name="content">
+        {% block sw_cms_block_{{ block }}_slot_content %}{% endblock %}
+    </slot>
 </div>
 {% endblock %}
